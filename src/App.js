@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useSelector, useDispatch } from "react-redux";
+import { getFortniteFetch } from "./fortniteState";
+import { useEffect } from "react";
 
 function App() {
+  const fortnite = useSelector((state) => state.fortnite.fortnite);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getFortniteFetch());
+  }, [dispatch]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>FORTNITE STORE</h1>
+      <p>Fortnite store items to purchase...</p>
+      <hr />
+      <div className="store">
+        {fortnite.data.map((item) => (
+          <div key={item.id} className="row">
+            <div className="column column-left">
+              <img
+                src={item.item.images.icon}
+                alt={item.item.name}
+                width={200}
+                height={200}
+              />
+            </div>
+            <div className="column column-right">
+              <h2>{item.item.name}</h2>
+              <p>{item.item.description}</p>
+              <p>Rarity: {item.item.rarity}</p>
+              <button>add to cart...</button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
